@@ -57,4 +57,6 @@ return [
             __DIR__ . '/../view',
         ],
     ],
+    'Zend\Db', // <-- This line
+    'Zend\Form'
 ];
