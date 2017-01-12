@@ -1,26 +1,55 @@
 <?php
-// module/Message/view/message/message/index.phtml:
-
-$title = 'My messages';
+$title = 'Simple Chat Text Project';
 $this->headTitle($title);
 ?>
-<h1><?= $this->escapeHtml($title) ?></h1>
-<p>
-    <a href="<?= $this->url('message', ['action' => 'add']) ?>">Add new message</a>
-</p>
+<h2 class="title"><?= $this->escapeHtml($title) ?></h2>
+<br/><br/>
+<div class="col-md-4"></div>
+<div class="col-md-4">
+    <?php
+        $form->setAttribute('action', $this->url('message', ['action' => 'add']));
+        $form->prepare();
+
+        $message = $form->get('message');
+        $message->setAttribute('class', 'form-control messageInput');
+        $message->setAttribute('placeholder', 'Let\'s type something here');
+
+        $submit = $form->get('submit');
+        $submit->setAttribute('class', 'btn btn-success float-right');
+
+        $form->setAttribute('action', $this->url('message', ['action' => 'add']));
+
+        $form->prepare();
+        echo $this->form()->openTag($form);
+    ?>
+    <div class="form-group">
+        <?= $this->formElement($message) ?>
+        <?= $this->formElementErrors()->render($message, ['class' => 'help-block']) ?>
+    </div>
+
+    <?php
+        echo $this->formSubmit($submit);
+        echo $this->formHidden($form->get('id'));
+        echo $this->form()->closeTag();
+    ?>
+</div>
+<div class="col-md-4"></div>
+<div class="clearfix"></div>
+<br/><br/>
 
 <table class="table">
-<tr>
-    <th>Message</th>
-    <th>&nbsp;</th>
-</tr>
-<?php foreach ($messages as $message) : ?>
     <tr>
-        <td><?= $this->escapeHtml($message->message) ?></td>
-        <td>
-            <a href="<?= $this->url('message', ['action' => 'edit', 'id' => $message->id]) ?>">Edit</a>
-            <a href="<?= $this->url('message', ['action' => 'delete', 'id' => $message->id]) ?>">Delete</a>
-        </td>
+        <th>Created</th>
+        <th>Text</th>
     </tr>
-<?php endforeach; ?>
+    <?php foreach ($messages as $message) : ?>
+        <tr>
+            <td><?= $this->escapeHtml($message->created) ?></td>
+            <td><?= $this->escapeHtml($message->message) ?></td>
+        </tr>
+    <?php endforeach; ?>
 </table>
+
+<?= $this->inlineScript()
+            ->prependFile($this->basePath('js/chat.js'))
+        ?>

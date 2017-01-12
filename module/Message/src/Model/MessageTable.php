@@ -3,6 +3,7 @@ namespace Message\Model;
 
 use RuntimeException;
 use Zend\Db\TableGateway\TableGatewayInterface;
+use Zend\Db\Sql\Select;
 
 class MessageTable
 {
@@ -15,7 +16,9 @@ class MessageTable
 
     public function fetchAll()
     {
-        return $this->tableGateway->select();
+        return $this->tableGateway->select(function (Select $select) {
+            $select->order('created DESC')->limit(10);
+        });
     }
 
     public function getMessage($id)
