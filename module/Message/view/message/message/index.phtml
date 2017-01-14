@@ -17,7 +17,7 @@ $this->headTitle($title);
         $submit = $form->get('submit');
         $submit->setAttribute('class', 'btn btn-success float-right');
 
-        $form->setAttribute('action', $this->url('message', ['action' => 'add']));
+        $form->setAttribute('action', $this->url('message', ['action' => 'index']));
 
         $form->prepare();
         echo $this->form()->openTag($form);
@@ -37,19 +37,15 @@ $this->headTitle($title);
 <div class="clearfix"></div>
 <br/><br/>
 
-<table class="table">
-    <tr>
-        <th>Created</th>
-        <th>Text</th>
-    </tr>
-    <?php foreach ($messages as $message) : ?>
+<table class="table" id="messagesList">
+    <thead>
         <tr>
-            <td><?= $this->escapeHtml($message->created) ?></td>
-            <td><?= $this->escapeHtml($message->message) ?></td>
+            <th>Created</th>
+            <th>Text</th>
         </tr>
-    <?php endforeach; ?>
+    </thead>
+    <tbody>
+    </tbody>
 </table>
 
-<?= $this->inlineScript()
-            ->prependFile($this->basePath('js/chat.js'))
-        ?>
+<script src="<?= $this->basePath('js/chat.js'); ?>"></script>

@@ -23,23 +23,12 @@ class MessageController extends AbstractActionController
         $form = new MessageForm();
         $form->get('submit')->setValue('Send');
         
-        return [
-            'messages' => $this->table->fetchAll(),
-            'form' => $form
-        ];
-    }
-
-    public function addAction()
-    {
-        $form = new MessageForm();
-        $form->get('submit')->setValue('Send');
-
+        
         $request = $this->getRequest();
 
         if (! $request->isPost()) {
             return ['form' => $form];
         }
-
         $message = new Message();
         $form->setInputFilter($message->getInputFilter());
         $form->setData($request->getPost());
@@ -47,16 +36,23 @@ class MessageController extends AbstractActionController
         if (! $form->isValid()) {
             return ['form' => $form];
         }
-
+        
         $message->exchangeArray($form->getData());
         $this->table->saveMessage($message);
+        $this->table->deleteOlderMessages();
         return $this->redirect()->toRoute('message');
     }
 
     public function listAction()
     {
+        $result = $this->table->fetchAll();
+        $messages = array();
+        foreach ($result as $message) {
+            $messages [] = $message;
+        }
+        
         return new JsonModel([
-            'messages' => $this->table->fetchAll()
+            'messages' => $messages
         ]);
     }
 

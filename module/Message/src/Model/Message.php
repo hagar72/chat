@@ -23,7 +23,7 @@ class Message
         $created = new \DateTime();
         $this->id     = !empty($data['id']) ? $data['id'] : null;
         $this->message = !empty($data['message']) ? $data['message'] : null;
-        $this->created  = $created->format('Y-m-d H:s:i');
+        $this->created  = !empty($data['created']) ? $data['created'] : $created->format('Y-m-d H:i:s');
     }
     
     public function setInputFilter(InputFilterInterface $inputFilter)

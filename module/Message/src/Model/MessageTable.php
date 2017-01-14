@@ -60,8 +60,14 @@ class MessageTable
         $this->tableGateway->update($data, ['id' => $id]);
     }
 
-    public function deleteMessage($id)
+    public function deleteOlderMessages()
     {
-        $this->tableGateway->delete(['id' => (int) $id]);
+        $messages = $this->tableGateway->select(function (Select $select) {
+            $select->order('created DESC')->limit(10)->offset(10);
+        });
+        
+        foreach ($messages as $message) {
+            $this->tableGateway->delete(['id' => (int) $message->id]);
+        }
     }
 }

@@ -27,5 +27,8 @@ return [
         'template_path_stack' => [
             'message' => __DIR__ . '/../view',
         ],
+        'strategies'                => array(
+            'ViewJsonStrategy',
+        ),
     ],
 ];
