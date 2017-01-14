@@ -45,14 +45,10 @@ class MessageController extends AbstractActionController
 
     public function listAction()
     {
-        $result = $this->table->fetchAll();
-        $messages = array();
-        foreach ($result as $message) {
-            $messages [] = $message;
-        }
+        $result = $this->table->fetchAllToArray();
         
         return new JsonModel([
-            'messages' => $messages
+            'messages' => $result
         ]);
     }
 
